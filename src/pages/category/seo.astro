@@ -1,0 +1,49 @@
+---
+
+ const query = `query allPosts($cat:String!) {
+  posts(where: {categoryName: $cat}) {
+    edges {
+      node {
+        title
+        slug
+        excerpt
+        date
+        uri
+        featuredImage {
+          node {
+            mediaItemUrl
+            srcSet
+            sizes
+            altText
+            uri
+          }
+        }
+      }
+    }
+  }
+}`;
+
+const variables = { cat: "web-design" };
+
+const response = await fetch(
+  `http://localhost/wordpress-class/graphql`,
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer %ACCESS_TOKEN%`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+  },
+).then((response) => response.json());
+
+console.log(response);
+
+const allPosts = response.data.posts.edges.map((item) => item.node.title);
+console.log(allPosts);
+
+
+
+
+---
+<div>{allPosts}</div>

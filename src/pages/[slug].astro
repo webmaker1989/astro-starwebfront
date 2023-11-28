@@ -1,0 +1,34 @@
+---
+// component import
+//import PostHeader from "../components/PostHeader.astro";
+import Layout from "../layouts/Layout.astro"
+import { singlePost } from "../lib/api";
+
+export async function getStaticPaths(){
+    const items = await singlePost();
+    const posts = items.posts.edges;
+    
+    return posts.flatMap((post) =>
+    post.node.categories.nodes.map((category) => ({
+      params: {
+        slug: category.slug,
+      },
+        props: {
+            post
+        }
+    })))
+}
+
+const { category } = Astro.params;
+const { post } = Astro.props;
+//console.log(post);
+---
+
+<Layout>
+
+  <h1>hello</h1>
+    
+       <h1>{post.node.title}</h1>
+
+       <p>{category}</p>
+</Layout> 

@@ -1,0 +1,22 @@
+---
+import { readingTime } from '../scripts/utils'
+const { post } = Astro.props;
+---
+
+
+        
+        <div class="post-container">  
+            <div class="latest-post-block">
+                <a class="latest-post-thumbnails" href={post.uri}><img loading="lazy" decoding="async" width="300" height="200" src={post?.featuredImage?.node?.mediaItemUrl} class="attachment-blog-thumbnail size-blog-thumbnail wp-post-image" alt="digital seo marketing image">
+                </a>
+                <div class="latest-post-content">
+                    <a class="cat_name" href={post.categories.nodes[0].uri}>{post.categories.nodes[0].name}</a>
+                    <a class="desc_name" href={post.uri} set:html={post.excerpt}></a>
+                    <p class="post_meta"><time class="post_date" datetime={post.date}>{new Date(post.date).toLocaleDateString()}</time>                        <span class="read_time">{readingTime(post.content)} min read</span></p>
+                </div>
+            </div>
+        </div>
+                
+            
+            </div>
+    

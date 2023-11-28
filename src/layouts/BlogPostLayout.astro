@@ -1,0 +1,40 @@
+---
+// component import
+//import PostHeader from "../components/PostHeader.astro";
+import Layout from "./Layout.astro";
+import { singlePost } from "../lib/api";
+
+import { slugify } from "../scripts/utils";
+ 
+const items = await singlePost();
+const posts = items.posts.edges; 
+
+//console.log(posts);
+---
+
+<Layout>
+    
+        {posts.map((post) => (
+          <div>
+            
+            <h3>{post.node.title}</h3>
+            <div>
+                <img width="300" height="200" src={post.node.featuredImage?.node?.mediaItemUrl} />
+                {post.node.categories.nodes.map((category) => (
+                  <a href={`blog/${slugify(category.slug)}`}>{category.name}</a>
+                ))}
+              
+            </div>
+          </div>
+        ))}
+      
+    </div>
+    <div class="sidebar"></div>
+  </div>
+</Layout> 
+
+<!-- <h1>
+    {posts.map((data) => (
+      <li>{data.node.title}</li>
+    ))}
+  </h1> -->

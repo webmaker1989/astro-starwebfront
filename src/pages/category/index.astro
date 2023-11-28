@@ -1,0 +1,23 @@
+---
+import { singlePost } from '../../lib/api'
+
+const items = await singlePost();
+const allPosts = items.posts.edges;
+
+const categories = allPosts.flatMap((post) =>
+  post.node.categories.nodes.map((category) => category.name)
+);
+
+console.log(categories);
+
+---
+
+<main>
+    <h1>Categories</h1>
+    <div style="display: flex; flex-wrap: wrap;  margin: 0 auto; justify-content: space-between;">
+        {categories.sort().map((item) => (
+            <p><a href={`/category/${item}`}>{item}</a></p>
+        ))}
+    </div>
+
+   

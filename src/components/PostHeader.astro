@@ -1,0 +1,17 @@
+---
+// library imports
+//import { Image } from "@astrojs/image/components";
+
+// utils imports
+//import { slugify, formatDate } from "../scripts/utils";
+
+const { title, category} = Astro.props;
+---
+
+<header>
+  <div class="container">
+
+    <h1 class="h2">{title}</h1>
+    <p>{category}</p>
+    
+</header>
