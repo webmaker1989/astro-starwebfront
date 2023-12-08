@@ -6,38 +6,31 @@ import AboutUs from '../components/AboutUs.astro';
 import Latest from '../components/Latest.astro';
 import { getLatestPosts } from '../lib/api';
 
+interface PostType {
+  id: string;
+  title: string;
+  // Add other properties as needed
+}
 
 const items = await getLatestPosts();
-//console.log(items);
-const posts = items.posts.nodes;
-//console.log(posts);
+const posts: PostType[] = items.posts.nodes;
 ---
-
 <Layout title="Welcome to Astro.">
-	<main>
-		<Nav />
-		<HeroSection />
-		<AboutUs />
+  <main>
+    <Nav />
+    <HeroSection />
+    <AboutUs />
 
-		<div class="" id="latest-articles">
-			<div class="">
-			<h2 class="latest-article-heading">Latest Articles</h2>
-			
-			
-			<div class="latest-post-container">
+    <div class="" id="latest-articles">
+      <div class="">
+        <h2 class="latest-article-heading">Latest Articles</h2>
 
-			{
-				posts.map(post => {
-					return (
-					<Latest post= {post}></Latest>
-					)
-				})
-			}
-
-		</div>
-		</div>
-
-	</main>
-</Layout>
-
-
+        <div class="latest-post-container">
+          {posts.map((post: PostType) => (
+            <Latest post={post} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>;
