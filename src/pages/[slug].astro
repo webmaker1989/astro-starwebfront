@@ -1,34 +1,55 @@
 ---
 // component import
-//import PostHeader from "../components/PostHeader.astro";
-import Layout from "../layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro";
 import { singlePost } from "../lib/api";
 
-export async function getStaticPaths(){
-    const items = await singlePost();
-    const posts = items.posts.edges;
-    
-    return posts.flatMap((post) =>
+interface PostType {
+  node: {
+    id: string;
+    title: string;
+    featuredImage?: {
+      node?: {
+        mediaItemUrl: string;
+      };
+    };
+    categories: {
+      nodes: {
+        id: string;
+        name: string;
+        slug: string;
+      }[];
+    };
+  };
+}
+
+export async function getStaticPaths() {
+  const items = await singlePost();
+  const posts: PostType[] = items.posts.edges.map((post: { node: PostType }) => post.node);
+
+  return posts.flatMap((post) =>
     post.node.categories.nodes.map((category) => ({
       params: {
         slug: category.slug,
       },
-        props: {
-            post
-        }
-    })))
+      props: {
+        post,
+      },
+    }))
+  );
 }
 
 const { slug } = Astro.params;
 const { post } = Astro.props;
-//console.log(post);
+
+// Ensure that 'post' and 'post.node' are defined before accessing their properties
+const title = post && post.node ? post.node.title : '';
+const postCategories = post && post.node ? post.node.categories.nodes : [];
 ---
-
-<Layout>
-
+<Layout title={title}>
   <h1>hello</h1>
-    
-       <h1>{post.node.title}</h1>
-
-       <p>{slug}</p>
-</Layout> 
+  <h1>{title}</h1>
+  {postCategories.map((category) => (
+    <p>{category.name}</p>
+  ))}
+  <p>{slug}</p>
+</Layout>;

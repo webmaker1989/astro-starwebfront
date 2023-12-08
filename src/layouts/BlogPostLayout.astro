@@ -1,6 +1,27 @@
 ---
 // component import
 //import PostHeader from "../components/PostHeader.astro";
+
+interface PostType {
+  node: {
+    id: string;
+    title: string;
+    featuredImage?: {
+      node?: {
+        mediaItemUrl: string;
+      };
+    };
+    categories: {
+      nodes: {
+        id: string;
+        name: string;
+        slug: string;
+      }[];
+    };
+  };
+}
+
+
 import Layout from "./Layout.astro";
 import { singlePost } from "../lib/api";
 
@@ -12,21 +33,27 @@ const posts = items.posts.edges;
 //console.log(posts);
 ---
 
-<Layout>
+<Layout title="Blog Post">
     
-        {posts.map((post) => (
-          <div>
-            
-            <h3>{post.node.title}</h3>
-            <div>
-                <img width="300" height="200" src={post.node.featuredImage?.node?.mediaItemUrl} />
-                {post.node.categories.nodes.map((category) => (
-                  <a href={`blog/${slugify(category.slug)}`}>{category.name}</a>
-                ))}
-              
-            </div>
-          </div>
+  {posts.map((post: PostType) => (
+    <div>
+      <h3>{post.node.title}</h3>
+      <div>
+        <img
+          width="300"
+          height="200"
+          src={post.node.featuredImage?.node?.mediaItemUrl}
+          alt={post.node.title}
+        />
+        {post.node.categories.nodes.map((category) => (
+          <a href={`blog/${slugify(category.slug)}`}>
+            {category.name}
+          </a>
         ))}
+      </div>
+    </div>
+  ))}
+  
       
     </div>
     <div class="sidebar"></div>

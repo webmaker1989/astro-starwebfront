@@ -12,7 +12,7 @@ const { post } = Astro.props;
         <div class="latest-post-content">
             <a class="cat_name" href={post.categories.nodes[0].uri}>{post.categories.nodes[0].name}</a>
             <a class="desc_name" href={post.uri} set:html={post.excerpt}></a>
-            <p class="post_meta"><time class="post_date" datetime={post.date}>{new Date(post.date).toLocaleDateString()}</time>                        <span class="read_time">{readingTime(post.content)} min read</span></p>
+            <p class="post_meta"><time class="post_date" datetime={post.date}>{new Date(post.date).toLocaleDateString()}</time></p>
         </div>
     </div>
 </div>

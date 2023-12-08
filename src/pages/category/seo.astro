@@ -1,5 +1,24 @@
 ---
 
+interface PostType {
+  node: {
+    title: string;
+    slug: string;
+    excerpt: string;
+    date: string;
+    uri: string;
+    featuredImage: {
+      node: {
+        mediaItemUrl: string;
+        srcSet: string;
+        sizes: string;
+        altText: string;
+        uri: string;
+      };
+    };
+  };
+}
+
  const query = `query allPosts($cat:String!) {
   posts(where: {categoryName: $cat}) {
     edges {
@@ -39,7 +58,7 @@ const response = await fetch(
 
 console.log(response);
 
-const allPosts = response.data.posts.edges.map((item) => item.node.title);
+const allPosts: string[] = response.data.posts.edges.map((item: PostType) => item.node.title);
 console.log(allPosts);
 
 
