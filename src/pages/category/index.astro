@@ -1,23 +1,37 @@
 ---
-import { singlePost } from '../../lib/api'
 
+import { singlePost } from '../../lib/api';
+
+// Assume a type definition for your post data
+interface PostType {
+  node: {
+    categories: {
+      nodes: {
+        name: string;
+      }[];
+    };
+  };
+}
+
+// Fetch data
 const items = await singlePost();
-const allPosts = items.posts.edges;
+const allPosts: PostType[] = items.posts.edges;
 
-const categories = allPosts.flatMap((post) =>
+// Extract category names
+const categories: string[] = allPosts.flatMap((post) =>
   post.node.categories.nodes.map((category) => category.name)
 );
 
 console.log(categories);
 
 ---
-
 <main>
-    <h1>Categories</h1>
-    <div style="display: flex; flex-wrap: wrap;  margin: 0 auto; justify-content: space-between;">
-        {categories.sort().map((item) => (
-            <p><a href={`/category/${item}`}>{item}</a></p>
-        ))}
-    </div>
-
-   
+  <h1>Categories</h1>
+  <div style={{ display: 'flex', flexWrap: 'wrap', margin: '0 auto', justifyContent: 'space-between' }}>
+    {categories.sort().map((item: string) => (
+      <p>
+        <a href={`/category/${item}`}>{item}</a>
+      </p>
+    ))}
+  </div>
+</main>
